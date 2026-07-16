@@ -12,13 +12,16 @@
   ],
   "functions": {
     "api/mcp.js": {
-      "maxDuration": 60
+      "maxDuration": 60,
+      "regions": [
+        "dub1"
+      ]
     },
     "api/health.js": {
-      "maxDuration": 30
+      "maxDuration": 30,
+      "regions": [
+        "dub1"
+      ]
     }
-  },
-  "regions": [
-    "dub1"
-  ]
+  }
 }
