@@ -21,9 +21,9 @@ test('initialize negotiates a supported protocol and declares tools', async () =
   assert.deepEqual(response.result.capabilities, { tools: { listChanged: false } });
 });
 
-test('tools/list exposes five read-only noauth tools', async () => {
+test('tools/list exposes four read-only noauth tools', async () => {
   const response = await handleRpc({ jsonrpc: '2.0', id: 2, method: 'tools/list', params: {} });
-  assert.equal(response.result.tools.length, 5);
+  assert.equal(response.result.tools.length, 4);
   assert.equal(TOOLS[0].annotations.readOnlyHint, true);
   assert.equal(TOOLS[0]._meta.securitySchemes[0].type, 'noauth');
 });
