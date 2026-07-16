@@ -1,11 +1,24 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
-    { "source": "/mcp", "destination": "/api/mcp" },
-    { "source": "/health", "destination": "/api/health" }
+    {
+      "source": "/mcp",
+      "destination": "/api/mcp"
+    },
+    {
+      "source": "/health",
+      "destination": "/api/health"
+    }
   ],
   "functions": {
-    "api/mcp.js": { "maxDuration": 60 },
-    "api/health.js": { "maxDuration": 30 }
-  }
+    "api/mcp.js": {
+      "maxDuration": 60
+    },
+    "api/health.js": {
+      "maxDuration": 30
+    }
+  },
+  "regions": [
+    "dub1"
+  ]
 }
