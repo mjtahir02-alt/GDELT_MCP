@@ -1,7 +1,7 @@
 node_modules/
 .vercel/
 .env
-.env.*
-!.env.example
-npm-debug.log*
+.env.local
+*.log
 .DS_Store
+coverage/
