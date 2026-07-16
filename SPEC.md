@@ -40,7 +40,7 @@ The retired GDELT GEO endpoint is deliberately excluded because its documented p
 
 ## Reliability and safety
 
-- Use a 25-second upstream timeout.
+- Use a 15-second timeout for each upstream attempt.
 - Serialize live GDELT requests at least 5.5 seconds apart per warm instance.
 - Retry HTTP 429 once after at least six seconds and respect `Retry-After` when present.
 - Cache successful identical GDELT responses in memory for five minutes.
