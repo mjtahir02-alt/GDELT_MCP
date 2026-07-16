@@ -5,7 +5,6 @@ const {
   getCoverageTimeline,
   getSourceCountryTimeline,
   getToneTimeline,
-  mapNewsLocations,
   searchArticles,
 } = require('../lib/gdelt');
 
@@ -166,44 +165,6 @@ const TOOLS = [
       },
     },
   ),
-  toolDefinition(
-    'map_news_locations',
-    'Map locations mentioned in news',
-    'Return GeoJSON points for locations mentioned in matching global news coverage using GDELT GEO 2.0.',
-    {
-      query: COMMON_FILTERS.query,
-      timespan: {
-        type: 'string',
-        default: '24h',
-        description: 'GEO lookback in minutes, hours, up to 7d, or 1w.',
-      },
-      sourceCountry: COMMON_FILTERS.sourceCountry,
-      sourceLanguage: COMMON_FILTERS.sourceLanguage,
-      domain: COMMON_FILTERS.domain,
-      theme: COMMON_FILTERS.theme,
-      minTone: COMMON_FILTERS.minTone,
-      maxTone: COMMON_FILTERS.maxTone,
-      maxPoints: {
-        type: 'integer',
-        minimum: 1,
-        maximum: 1000,
-        default: 100,
-        description: 'Maximum distinct mapped locations.',
-      },
-      geoResolution: {
-        type: 'integer',
-        enum: [0, 1, 2],
-        default: 1,
-        description: '0 includes countries, regions and cities; 1 excludes country-only mentions; 2 keeps only city/landmark mentions.',
-      },
-      sortBy: {
-        type: 'string',
-        enum: ['date', 'tonedesc', 'toneasc'],
-        default: 'date',
-        description: 'Order popup articles by recency or tone.',
-      },
-    },
-  ),
 ];
 
 const TOOL_HANDLERS = {
@@ -211,7 +172,6 @@ const TOOL_HANDLERS = {
   get_coverage_timeline: getCoverageTimeline,
   get_tone_timeline: getToneTimeline,
   get_source_country_timeline: getSourceCountryTimeline,
-  map_news_locations: mapNewsLocations,
 };
 
 function rpcResult(id, result) {
@@ -295,7 +255,6 @@ async function handleRpc(message, dependencies = {}) {
         get_coverage_timeline: 'GDELT coverage timeline retrieved.',
         get_tone_timeline: 'GDELT tone timeline retrieved.',
         get_source_country_timeline: 'GDELT source-country timeline retrieved.',
-        map_news_locations: 'GDELT news locations retrieved.',
       };
       return rpcResult(id, toolResult(payload, summaries[toolName]));
     } catch (error) {
