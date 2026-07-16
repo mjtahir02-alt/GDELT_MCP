@@ -1,6 +1,6 @@
 'use strict';
 
-const { buildDocUrl, fetchJson } = require('../lib/gdelt');
+const { buildDocUrl } = require('../lib/gdelt');
 
 function send(res, status, body) {
   res.statusCode = status;
@@ -9,7 +9,27 @@ function send(res, status, body) {
   res.end(JSON.stringify(body));
 }
 
-module.exports = async function health(req, res) {
+async function probeDocApi(fetchImpl = globalThis.fetch) {
+  if (typeof fetchImpl !== 'function') throw new Error('Global fetch is unavailable.');
+  const url = buildDocUrl('timelinevolraw', { query: 'GDELT', timespan: '1h' });
+  const response = await fetchImpl(url, {
+    method: 'GET',
+    headers: { Accept: 'application/json, text/plain;q=0.8' },
+    signal: AbortSignal.timeout(10_000),
+  });
+  const text = await response.text();
+  if (!response.ok) {
+    const detail = text.replace(/\s+/g, ' ').slice(0, 240);
+    throw new Error(`GDELT DOC API returned HTTP ${response.status}${detail ? `: ${detail}` : ''}`);
+  }
+  try {
+    JSON.parse(text);
+  } catch {
+    throw new Error('GDELT DOC API returned a non-JSON response.');
+  }
+}
+
+async function health(req, res) {
   const response = {
     status: 'ok',
     service: 'gdelt-mcp',
@@ -23,8 +43,7 @@ module.exports = async function health(req, res) {
   if (String(req.query?.deep || '') !== '1') return send(res, 200, response);
 
   try {
-    const url = buildDocUrl('timelinevolraw', { query: 'GDELT', timespan: '1h' });
-    await fetchJson(url);
+    await probeDocApi();
     return send(res, 200, { ...response, upstream: 'reachable' });
   } catch (error) {
     return send(res, 503, {
@@ -34,4 +53,7 @@ module.exports = async function health(req, res) {
       error: error instanceof Error ? error.message : String(error),
     });
   }
-};
+}
+
+module.exports = health;
+module.exports._test = { probeDocApi };
