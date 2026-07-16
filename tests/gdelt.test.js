@@ -9,7 +9,13 @@ const {
   fetchJson,
   normalizeDateTime,
   searchArticles,
+  UPSTREAM_TIMEOUT_MS,
 } = require('../lib/gdelt');
+
+
+test('upstream attempts use a bounded 15-second timeout', () => {
+  assert.equal(UPSTREAM_TIMEOUT_MS, 15_000);
+});
 
 test('normalizeDateTime converts ISO timestamps to GDELT format', () => {
   assert.equal(normalizeDateTime('2026-07-16T08:30:45Z', 'startDateTime'), '20260716083045');
