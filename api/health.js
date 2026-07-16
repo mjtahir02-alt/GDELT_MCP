@@ -11,7 +11,7 @@ function send(res, status, body) {
 
 async function probeDocApi(fetchImpl = globalThis.fetch) {
   if (typeof fetchImpl !== 'function') throw new Error('Global fetch is unavailable.');
-  const url = buildDocUrl('timelinevolraw', { query: 'GDELT', timespan: '1h' });
+  const url = buildDocUrl('artlist', { query: '"artificial intelligence"', timespan: '1h', maxRecords: 1, sort: 'datedesc' });
   const response = await fetchImpl(url, {
     method: 'GET',
     headers: { Accept: 'application/json, text/plain;q=0.8' },
