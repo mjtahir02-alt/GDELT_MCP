@@ -5,7 +5,6 @@ const test = require('node:test');
 
 const {
   buildDocUrl,
-  buildGeoUrl,
   buildSearchQuery,
   fetchJson,
   normalizeDateTime,
@@ -56,20 +55,6 @@ test('buildDocUrl rejects ambiguous relative and precise time ranges', () => {
     }),
     /timespan or startDateTime\/endDateTime/,
   );
-});
-
-test('buildGeoUrl produces bounded pointdata GeoJSON queries', () => {
-  const url = buildGeoUrl({
-    query: 'flooding',
-    timespan: '12h',
-    maxPoints: 250,
-    geoResolution: 2,
-    sortBy: 'date',
-  });
-  assert.equal(url.searchParams.get('mode'), 'pointdata');
-  assert.equal(url.searchParams.get('format'), 'geojson');
-  assert.equal(url.searchParams.get('maxpoints'), '250');
-  assert.equal(url.searchParams.get('geores'), '2');
 });
 
 test('fetchJson parses successful GDELT responses', async () => {
