@@ -24,6 +24,7 @@ GDELT is a large-scale automated media-monitoring system. Its translation and to
 GDELT currently asks API users to keep requests at least five seconds apart. This server therefore:
 
 - serializes outbound GDELT requests at least 5.5 seconds apart per warm instance;
+- limits each upstream attempt to 15 seconds;
 - retries HTTP 429 once after at least six seconds;
 - respects a longer `Retry-After` header when supplied;
 - caches successful identical requests for five minutes; and
