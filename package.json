@@ -2,7 +2,7 @@
   "name": "gdelt-mcp",
   "version": "1.0.0",
   "private": true,
-  "description": "Read-only MCP server for global news intelligence using GDELT DOC 2.0 and GEO 2.0",
+  "description": "Read-only MCP server for global news intelligence using the GDELT DOC 2.0 API",
   "license": "MIT",
   "engines": {
     "node": ">=20"
